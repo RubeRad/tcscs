@@ -1,0 +1,85 @@
+
+<!-- saved from url=(0051)http://jlcooke.ca/hashcash/hashcashv1_jsapplet.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Hashcash-v1 Applet</title>
+
+</head><body><h1>Hashcash-v1 Applet</h1>
+
+Adapted from <a href="http://jlcooke.ca/hashcash/hashcashv1_jsapplet.html">http://jlcooke.ca/hashcash/hashcashv1_jsapplet.html</a>
+    
+<script language="javascript" type="text/javascript" src="hashcash.js"></script>
+<applet name="hashcashv1_applet" width="1" height="1" code="hashcashv1" archive="hashcashv1.jar">
+</applet>
+<script language="javascript" type="text/javascript">
+<!--
+/* Define a callback to pass to hashcash to let us know when we're done computing.
+ *  This is required since hashcash_create() will actually return immediatly and
+ *  continue computing in the background so the browser will not appear to be
+ *  "locked up" or "frozen".
+ */
+function myCompleteCallback(result) {
+  document.form1.token.value = result;
+}
+
+/* Define a callback to pass to hashcash to let us know how much longer it
+ * **EXPECTS** the computation to take.  The "amount" value passed in this
+ * callback is a percentage complete.  It starts at 0.0 and statistically
+ * we expect it to be at 1.0 when computation is done.  It can however
+ * take much longer.  "amount" values like 4.5 are very possible.
+ */
+function myUpdateCallback(amount) {
+  document.form1.progress.value = (Math.floor(amount*1000)/10) +"%";
+}
+
+/* function pointer to save the previous window.onload function (if there was one)
+ */
+function oldOnLoad() {}
+/* a new onload function that performs and hashcashv1_selftest()
+ * (an alert window pops up when it fails) and then calls the old onload function
+ * (if there was one)
+ */
+function newOnLoad() {
+  hashcashv1_selftest()
+
+  if (oldOnLoad != null)
+    oldOnLoad();
+}
+
+
+function create(form, updateCB, completeCB, string, extn, bits) {
+  form.token.value='searching...';
+  hashcashv1_create(updateCB, completeCB, string, extn, bits);
+}
+function createJSOnly(form, updateCB, completeCB, string, bits) {
+  form.token.value='searching...';
+  var saveState = hashcashv1_jsonly;
+  hashcashv1_jsonly=true;
+  hashcashv1_create(updateCB, completeCB, string, bits);
+  hashcashv1_jsonly = saveState;
+}
+oldOnLoad = window.onload;
+window.onload = newOnLoad;
+-->
+</script>
+
+<form name="form1">
+Complete (may take longer): <input type="text" name="progress" value="0%"><br>
+Challenge text (email address): <input type="text" name="string" value="jdoe@whatever.ca"><br>
+Bits required for HashCash (11 bits takes twice as long as 10 bits): <select name="bits">
+<option value="15" selected="">15 Bits
+</option><option value="16">16 Bits
+</option><option value="17">17 Bits
+</option><option value="18">18 Bits
+</option><option value="19">19 Bits
+</option><option value="20">20 Bits
+</option><option value="21">21 Bits
+</option><option value="22">22 Bits
+</option><option value="23">23 Bits
+</option><option value="24">24 Bits
+</option><option value="25">25 Bits
+</option></select>
+<br>
+HashCash token and corresponding SHA1: <textarea rows="4" cols="64" name="token" style="margin: 0px; width: 832px; height: 72px;">token will appear here</textarea><br>
+
+<input type="button" onclick="createJSOnly(form, &#39;myUpdateCallback&#39;, &#39;myCompleteCallback&#39;, form.string.value, form.bits.value);" value="Compute HashCash">
+</form>
+</body></html>
