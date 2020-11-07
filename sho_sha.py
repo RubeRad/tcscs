@@ -1,4 +1,4 @@
-#! py -3
+#! /usr/bin/py -3
 
 from bitstring import BitArray
 from struct import *
@@ -52,7 +52,10 @@ h2 = '0x98BADCFE'
 h3 = '0x10325476'
 h4 = '0xC3D2E1F0'
 
-msg = 'The motto of the Cambridge School is "Soli Deo Gloria."'
+msg = 'Cambridge motto: "SDG"'
+print('Original Data', len(msg), 'bytes', len(msg)*8, 'bits')
+print(msg)
+print()
 bytes = msg.encode('UTF-8')
 barry = BitArray(bytes)
 bits  = barry.bin
@@ -64,10 +67,23 @@ while len(bits) < 448:
 len8bytes = pack('>Q', nbits)
 bits += BitArray(len8bytes).bin
 newlen = len(bits)
+#print('512 bits: ')
+#print(bits)
 
 words = []
+letteri = 0
 for i in range(16):
-   w = bits[i*16:(i+1)*16]
+   w = bits[i*32:(i+1)*32]
+   if letteri < len(msg):
+      li = msg[letteri]
+      letteri+=1
+   else:
+      li = ' '
+   if letteri < len(msg):
+      lj = msg[letteri]
+      letteri+=1
+   else:
+      lj = ' '
    print('{} {:02d}'.format(w,i))
    words.append(w)
 
