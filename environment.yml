@@ -5,3 +5,5 @@ dependencies:
   - pip:
     - matplotlib
     - tensorflow
+    - sklearn
+
