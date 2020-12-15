@@ -7,4 +7,5 @@ dependencies:
     - tensorflow
     - sklearn
     - pandas
+    - networkx
 
