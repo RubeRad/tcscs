@@ -8,4 +8,7 @@ dependencies:
     - sklearn
     - pandas
     - networkx
+    - geopandas
+    - descartes
+    - mapclassify
 
