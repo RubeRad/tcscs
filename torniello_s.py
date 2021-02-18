@@ -15,42 +15,53 @@ def lineseg(x1,y1, x2,y2):
    t.goto(x2,y2)
 
 
-def ccw_arc(cx, cy, sx, sy, ex, ey, reflex=False):
-   # go to the starting point
+# For a clockwise arc, just call ccw_arc with the
+# start/end points switched
+def  cw_arc(cx, cy,  sx, sy,  ex, ey, nsteps=20):
+    ccw_arc(cx, cy,  ex, ey,  sx, sy, nsteps)
+
+# Draw a counter-clockwise arc around center (cx,cy)
+# from starting point (sx,sy) to ending point (ex,ey),
+# using nsteps short line segments
+def ccw_arc(cx, cy,  sx, sy,  ex, ey, nsteps=20):
+
+   # Determine the radius
+   dx = sx-cx
+   dy = sy-cy
+   r = m.sqrt(dx*dx + dy*dy)
+
+   # Determine the polar angle of the starting point
+   sa = m.degrees( m.atan2(dy, dx) )
+
+   # and the ending point
+   dx = ex-cx
+   dy = ey-cy
+   ea = m.degrees( m.atan2(dy, dx) )
+
+   # make sure we are proceeding from a smaller to a larger angle
+   if ea < sa:
+      ea += 360
+
+   # Compute the angular step
+   da = (ea - sa)/nsteps
+
+   # get ready to start drawing.
    t.penup()
-   t.goto(sx, sy)  # this is where we start
-
-   # we need to be oriented so that the center is straight left
-   # first point straight at the center
-   ctr_heading = t.towards(cx,cy)
-   t.setheading(ctr_heading)
-   t.right(90)
-
-   # compute the radius
-   sdx = sx-cx
-   sdy = sy-cy
-   r = m.sqrt(sdx*sdx + sdy*sdy)
-   sdx /= r # unitize the vector
-   sdy /= r
-
-   # determine the number of degrees of arc
-   edx = (ex-cx)/r
-   edy = (ey-cy)/r
-   dot = (sdx*edx + sdy*edy)
-   arc = m.degrees(m.acos(dot))
-   if reflex:
-      arc = 360 - arc
-
-   # now we can finally draw the arc
+   t.goto(sx, sy)
+   x = sx
+   y = sy
+   a = sa
    t.pendown()
-   t.circle(r, arc)
+
+   for step in range(nsteps):
+      a = a + da
+      x = cx + m.cos(m.radians(a))*r
+      y = cy + m.sin(m.radians(a))*r
+      t.goto(x,y)
 
 
-def cw_arc(cx, cy, sx, sy, ex, ey, reflex=False):
-   ccw_arc(cx, cy, ex, ey, sx, sy, reflex)
 
-
-scale = 30
+scale = 40
 
 # draw the bounding 9x9 box first
 s9 = scale * 9
@@ -65,7 +76,7 @@ cx = scale * 4.5    # a circular arc is drawn from this point with center at (4.
 cy = scale * 5.5
 x2 = scale * 6      # ending at point 2 where x2=6
 y2 = scale * (5.5 + m.sqrt(10)) # Hence y2
-cw_arc(cx, cy, x1, y1, x2, y2) # this arc is CW
+cw_arc(cx, cy, x1, y1, x2, y2)  # this arc is CW
 
 
 cx = scale * 6.5    # A small arc is drawn with center (6.5, 9)
@@ -74,7 +85,7 @@ x3 = scale * 6.5    # from point 3 = (6.5, 8.5)
 y3 = scale * 8.5
 x  = scale * 7      # to (7,9)
 y  = scale * 9
-ccw_arc(cx, cy, x3, y3, x, y)  # this arc is CCW
+ccw_arc(cx, cy, x3, y3, x, y) # this arc is CCW
 
 x4 = scale * 6      # a straight line is drawn from (6,7)
 y4 = scale * 7
@@ -100,7 +111,7 @@ cy = scale * (7+1/8)
 # is drawn from point 4 to
 x9 = scale * 3.5
 y9 = scale * 6
-ccw_arc(cx, cy, x4, y4, x9, y9, True) # this arc is >180
+ccw_arc(cx, cy, x4, y4, x9, y9)
 
 # and a straight line continues from there to
 x10 = scale * 6
