@@ -1,0 +1,43 @@
+\documentclass[12pt]{article}
+
+\begin{document}
+\title{Pizza Puzzle}
+%\maketitle
+
+8 roommates are going to order one giant pizza, and they're having trouble
+reaching consensus about the 5 available toppings:
+\begin{itemize}
+\item Mushrooms
+\item Sausage
+\item Ham
+\item Pineapple
+\item Anchovies
+\end{itemize}
+
+They agree that everybody gets to state {\bf TWO} preferences (positive or
+negative), and that they'll get a pizza if they can find a combination of
+toppings that satisfies at least {\bf ONE} of everybody's preferences.
+
+\begin{enumerate}
+\item Eddie is easy-going. As long as there's either Mushrooms or Sausage, he's
+  good. Eddie's preferences are $(m \lor s)$.
+\item Helen {\sc hates} Hawaiian pizza. If there's no ham, or if there's no
+  pineapple, then technically it's not Hawaiian, so Helen would be
+  happy. Helen's preferences are $(\neg h \lor \neg p)$.
+\item Jared's preferences are not sausage, or yes pineapple: $(\neg s \lor p)$
+\item I didn't feel like making up 5 more names, but you get the point.
+\end{enumerate}
+
+The agreed-upon rule of satisfying at least one preference for each roommate looks like this:
+$$(m \lor s) \land
+(\neg h \lor \neg p) \land
+(\neg s \lor p) \land
+(\neg m \lor s) \land
+(\neg h \lor a) \land
+(\neg h \lor \neg m) \land
+(\neg p \lor \neg s) \land
+(\neg a \lor \neg m)$$
+
+Can the roommates be satsfied?
+
+\end{document}
