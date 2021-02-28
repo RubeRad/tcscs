@@ -1,9 +1,12 @@
 \documentclass[12pt]{article}
-
+%\usepackage{geometry}
+%\geometry{letterpaper, portrait, margin=1cm}
 \begin{document}
 \title{Pizza Puzzle}
 %\maketitle
+\pagestyle{empty}
 
+\section*{A Pizza Puzzle}
 8 roommates are going to order one giant pizza, and they're having trouble
 reaching consensus about the 5 available toppings:
 \begin{itemize}
@@ -22,8 +25,8 @@ toppings that satisfies at least {\bf ONE} of everybody's preferences.
 \item Eddie is easy-going. As long as there's either Mushrooms or Sausage, he's
   good. Eddie's preferences are $(m \lor s)$.
 \item Helen {\sc hates} Hawaiian pizza. If there's no ham, or if there's no
-  pineapple, then technically it's not Hawaiian, so Helen would be
-  happy. Helen's preferences are $(\neg h \lor \neg p)$.
+  pineapple (even if the other is present), then technically it's not Hawaiian,
+  so Helen would be happy. Helen's preferences are $(\neg h \lor \neg p)$.
 \item Jared's preferences are not sausage, or yes pineapple: $(\neg s \lor p)$
 \item I didn't feel like making up 5 more names, but you get the point.
 \end{enumerate}
@@ -39,5 +42,63 @@ $$(m \lor s) \land
 (\neg a \lor \neg m)$$
 
 Can the roommates be satsfied?
+
+\vspace{1cm}
+How about these very picky roommates, that don't seem to like anything?
+$$(\neg m \lor \neg p) \land
+(\neg s \lor \neg m) \land
+(\neg p \lor m) \land
+(\neg s \lor m) \land
+(\neg h \lor \neg s) \land
+(\neg p \lor \neg a) \land
+(a \lor \neg p) \land
+(\neg h \lor \neg p)$$
+
+\clearpage
+\section*{Homework}
+For each of these two 2SAT problems:
+\begin{enumerate}
+\item
+$(h \lor p) \land (m \lor s) \land (s \lor p) \land (a \lor \neg m)
+  \land (h \lor a) \land (\neg p \lor h) \land (h \lor \neg s) \land
+  (\neg s \lor p)$
+\item
+$(\neg a \lor p) \land (\neg s \lor a) \land (\neg a \lor \neg h) \land
+  (\neg h \lor a) \land (p \lor \neg s) \land (\neg m \lor a) \land (\neg
+  m \lor \neg a) \land (h \lor m)$
+\end{enumerate}
+
+Do the following:
+\begin{itemize}
+\item At {\tt https://bl.ocks.org/cjrd/6863459}, click Open and upload (from
+  Schoology) {\tt pizza5.json}.
+\item Create two arcs for every clause, according to these principles:
+  \begin{itemize}
+  \item If it's not the first one $\Rightarrow$ it must be the second one.
+  \item If it's not the second one $\Rightarrow$ it must be the first one.
+  \end{itemize}
+\item Save your progress with the `download' button, name it using 1 or 2 for
+  the problem number, and your own letter {\tt 2SAT[12]arcs[ABCDE].json}.
+\item (Try to) rearrange the nodes so arcs flow from left to right, download
+  your rearrangement as {\tt 2SAT[12]flow[ABCDE].json}.
+\item If there is a cycle that prevents a satisfying assignment, specify it,
+  like ``$a \Rightarrow \neg b \Rightarrow \neg a \Rightarrow c \Rightarrow a$,
+  thus $a\Rightarrow\neg a$ and $\neg a\Rightarrow a$, so there is no possible
+  truth value for $a$.''
+\item If there is a satisfying assignment,
+  \begin{itemize}
+    \item Construct it right-to-left, something like, ``$a$ is a sink node, set
+      it to {\sc true} (thus $\neg a$ is {\sc false}). Next $\neg b$ is set to
+      {\sc true} (so $b$ is {\sc false})... and now all values are assigned.''
+    \item Plug the assignments into the original 2SAT statement and demonstrate
+      it evaluates to {\sc true}.
+  \end{itemize}
+
+\item Submit your saved .json files (4 of them) along with your solutions.
+\item If you find it helpful, you can screenshot/print your logical flow
+  diagrams, and write/draw on them to provide the solutions, for instance
+  highlight a cycle and the conflicting nodes on the cycle, or annotate the
+  order of truth assignments.
+\end{itemize}
 
 \end{document}
