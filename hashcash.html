@@ -27,7 +27,7 @@ function myCompleteCallback(result) {
  * take much longer.  "amount" values like 4.5 are very possible.
  */
 function myUpdateCallback(amount) {
-  document.form1.progress.value = (Math.floor(amount*1000)/10) +"%";
+  document.form1.progress.value = amount; // (Math.floor(amount*1000)/10) +"%";
 }
 
 /* function pointer to save the previous window.onload function (if there was one)
@@ -62,7 +62,7 @@ window.onload = newOnLoad;
 </script>
 
 <form name="form1">
-Complete (may take longer): <input type="text" name="progress" value="0%"><br>
+Number of hash attempts: <input type="text" name="progress" value="0"><br>
 Challenge text (email address): <input type="text" name="string" value="jdoe@whatever.ca"><br>
 Bits required for HashCash (11 bits takes twice as long as 10 bits): <select name="bits">
 <option value="15" selected="">15 Bits

@@ -89,8 +89,9 @@ function hashcashv1_create_loop(updateCallback, str, bits) {
     result = calcSHA1(input);
     fiddle += 1; k++;
     if ((k & 0xff) == 0  &&  updateCallback != null)
-      eval(updateCallback +"("+ (k/tot) +");");
+      eval(updateCallback +"("+ (k) +");");
   }
+  eval(updateCallback + "("+(k)+");");
   input += " " + hex(result);
   return input;
 }
