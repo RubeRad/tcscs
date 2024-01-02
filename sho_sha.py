@@ -102,11 +102,11 @@ for i in range(16,80):
 
 
 print('')
-a = BitArray(h0).bin; print(a, 'a')
-b = BitArray(h1).bin; print(b, 'b')
-c = BitArray(h2).bin; print(c, 'c')
-d = BitArray(h3).bin; print(d, 'd')
-e = BitArray(h4).bin; print(e, 'e')
+a = BitArray(h0).bin; print(a, 'a=0x67452301')
+b = BitArray(h1).bin; print(b, 'b=0xEFCDAB89')
+c = BitArray(h2).bin; print(c, 'c=0x98BADCFE')
+d = BitArray(h3).bin; print(d, 'd=0x10325476')
+e = BitArray(h4).bin; print(e, 'e=0xC3D2E1F0')
 
 for i in range(80):
    print('\ni =', i, '\n')
@@ -136,15 +136,18 @@ for i in range(80):
    elif i<40:
       f = xorstr(b, xorstr(c,d))
       k = BitArray('0x6ED9EBA1').bin
+      print(k, 'k=sqrt(3)*2^30')
    elif i<60:
       bc = andstr(b, c)
       bd = andstr(b, d)
       cd = andstr(c, d)
       f = orstr(bc, orstr(bd, cd))
       k = BitArray('0x8F1BBCDC').bin
+      print(k, 'k=sqrt(5)*2^30')
    else:
       f = xorstr(b, xorstr(c, d))
       k = BitArray('0xCA62C1D6').bin
+      print(k, 'k=sqrt(10)*2^30')
 
    print('')
    al5 = leftrot(a, 5, 'a')
@@ -188,17 +191,48 @@ for i in range(80):
    print(d, 'd<--c')
    print(e, 'e<--d')
 
-print('')
-h0 = hex(int64(a))
-h1 = hex(int64(b))
-h2 = hex(int64(c))
-h3 = hex(int64(d))
-h4 = hex(int64(e))
-print(h0, 'h0')
-print(h1, 'h1')
-print(h2, 'h2')
-print(h3, 'h3')
-print(h4, 'h4')
 
-sha1 = BitArray(bin=(a+b+c+d+e)).hex
+print('\nFinally, add (and truncate) a-e into h0-h4')
+print('h0 ' + h0)
+print('a  ' + hex(int64(a)))
+print('-------------------------')
+h0 = (int(h0,0) + int64(a)) & 0xFFFFFFFF
+h0 = hex(h0)
+print('h0 ' + h0)
+print()
+
+print('h1 ' + h1)
+print('b  ' + hex(int64(b)))
+print('-------------------------')
+h1 = (int(h1,0) + int64(b)) & 0xFFFFFFFF
+h1 = hex(h1)
+print('h1 ' + h1)
+print()
+
+print('h2 ' + h2)
+print('c  ' + hex(int64(c)))
+print('-------------------------')
+h2 = (int(h2,0) + int64(c)) & 0xFFFFFFFF
+h2 = hex(h2)
+print('h2 ' + h2)
+print()
+
+print('h3 ' + h3)
+print('d  ' + hex(int64(d)))
+print('-------------------------')
+h3 = (int(h3,0) + int64(d)) & 0xFFFFFFFF
+h3 = hex(h3)
+print('h3 ' + h3)
+print()
+
+print('h4 ' + h4)
+print('e  ' + hex(int64(e)))
+print('-------------------------')
+h4 = (int(h4,0) + int64(e)) & 0xFFFFFFFF
+h4 = hex(h4)
+print('h4 ' + h4)
+print()
+
+print('Final SHA1 is concatenation of h0-h4:')
+sha1 = h0+h1+h2+h3+h4
 print(sha1)
